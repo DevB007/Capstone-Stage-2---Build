@@ -1,0 +1,50 @@
+{
+  "project_info": {
+    "project_number": "124449345960",
+    "firebase_url": "https://imalive-3921a.firebaseio.com",
+    "project_id": "imalive-3921a",
+    "storage_bucket": "imalive-3921a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124449345960:android:b29edfec568f6bd0",
+        "android_client_info": {
+          "package_name": "com.example.deveshwar.imalive"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "124449345960-kr2c375uahco4dlsavi3e94i1olq9pnn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.deveshwar.imalive",
+            "certificate_hash": "94c82e8d763048f1521effe22402e9739cfe762e"
+          }
+        },
+        {
+          "client_id": "124449345960-uda8bcfv0ek09gq3sdglgme083vhgdan.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2uFuwQJCN0pVeTVnVAOt5rmaj0qtGtq0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

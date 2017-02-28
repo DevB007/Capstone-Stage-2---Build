@@ -6,7 +6,7 @@ android {
         release {
             keyAlias 'keystore'
             keyPassword 'password'
-            storeFile file('/Users/Deveshwar/AndroidStudioProjects/IMalive/keystore.jks')
+            storeFile file('app.keystore.jks')
             storePassword 'password'
         }
     }
@@ -14,6 +14,7 @@ android {
     buildToolsVersion "24.0.2"
 
     defaultConfig {
+        vectorDrawables.useSupportLibrary = true
         applicationId "com.example.deveshwar.imalive"
         minSdkVersion 11
         targetSdkVersion 24
@@ -29,11 +30,15 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+
     compile 'com.android.support:appcompat-v7:24.2.0'
     compile 'com.android.support:design:24.2.0'
     compile 'com.android.support:support-vector-drawable:24.2.0'
     compile 'com.android.support:recyclerview-v7:24.2.0'
-    compile 'com.google.android.gms:play-services-location:8.4.0'
+    compile 'com.google.android.gms:play-services-location:9.4.0'
+    compile 'com.google.firebase:firebase-ads:9.4.0'
+    testCompile 'junit:junit:4.12'
 }
+
+apply plugin: 'com.google.gms.google-services'

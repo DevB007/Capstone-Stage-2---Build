@@ -39,4 +39,5 @@
     <string name="progress_dialog_weather_message">Please wait...</string>
     <string name="message_sent_message">Your IMalive message has been sent to</string>
     <string name="message_send_button">Send Message</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
 </resources>
