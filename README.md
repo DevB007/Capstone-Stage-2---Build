@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+# Capstone-Stage-2---Build
+>>>>>>> 013161f5c61cdd6b4d431814760ed2663ab609ae
 # Udacity Android Developer Nanodegree Capstone Project - IMalive
 IMalive lets the people you care about know you're not dead.
 
