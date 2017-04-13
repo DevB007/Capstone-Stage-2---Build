@@ -10,14 +10,14 @@ android {
             storePassword 'password'
         }
     }
-    compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    compileSdkVersion 25
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
         applicationId "com.example.deveshwar.imalive"
-        minSdkVersion 11
-        targetSdkVersion 24
+        minSdkVersion 14
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
     }
@@ -33,12 +33,17 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
-    compile 'com.android.support:appcompat-v7:24.2.0'
-    compile 'com.android.support:design:24.2.0'
-    compile 'com.android.support:support-vector-drawable:24.2.0'
-    compile 'com.android.support:recyclerview-v7:24.2.0'
-    compile 'com.google.android.gms:play-services-location:9.4.0'
-    compile 'com.google.firebase:firebase-ads:9.4.0'
+    final GPLAY_VERSION = "10.2.1"
+    final SUPPORT_VERSION = "25.3.1"
+
+    compile "com.android.support:appcompat-v7:$SUPPORT_VERSION"
+    compile "com.android.support:design:$SUPPORT_VERSION"
+    compile "com.android.support:support-vector-drawable:$SUPPORT_VERSION"
+    compile "com.android.support:recyclerview-v7:$SUPPORT_VERSION"
+    compile "com.google.android.gms:play-services-location:$GPLAY_VERSION"
+    compile "com.google.android.gms:play-services-maps:$GPLAY_VERSION"
+    compile "com.google.firebase:firebase-ads:$GPLAY_VERSION"
+    compile "com.google.android.gms:play-services-places:$GPLAY_VERSION"
     testCompile 'junit:junit:4.12'
 }
 

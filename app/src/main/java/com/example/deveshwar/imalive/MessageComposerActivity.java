@@ -45,7 +45,8 @@ import java.net.URL;
 
 import io.realm.Realm;
 
-public class MessageComposerActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class MessageComposerActivity extends AppCompatActivity implements GoogleApiClient
+        .OnConnectionFailedListener {
 
     private static final int PLACE_PICKER_REQUEST = 1;
     private Realm realm;
@@ -136,15 +137,8 @@ public class MessageComposerActivity extends AppCompatActivity implements Google
     private void attachWeather() {
         progressDialog = ProgressDialog.show(this, getString(R.string.progress_dialog_weather_title),
                 getString(R.string.progress_dialog_weather_message), true);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED) {
         }
         PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi.getCurrentPlace(mGoogleApiClient, null);
         result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
