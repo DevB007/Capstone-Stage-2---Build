@@ -10,12 +10,12 @@ android {
         }
     }
     compileSdkVersion 25
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '25.0.2'
 
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
         applicationId "com.example.deveshwar.imalive"
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -32,8 +32,8 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
-    final GPLAY_VERSION = "10.2.1"
-    final SUPPORT_VERSION = "25.3.1"
+    final GPLAY_VERSION = "10.2.0"
+    final SUPPORT_VERSION = "25.1.1"
 
     compile "com.android.support:appcompat-v7:$SUPPORT_VERSION"
     compile "com.android.support:design:$SUPPORT_VERSION"
@@ -43,6 +43,12 @@ dependencies {
     compile "com.google.android.gms:play-services-maps:$GPLAY_VERSION"
     compile "com.google.firebase:firebase-ads:$GPLAY_VERSION"
     compile "com.google.android.gms:play-services-places:$GPLAY_VERSION"
+
+    // FirebaseUI Database only
+    compile 'com.firebaseui:firebase-ui-database:1.2.0'
+
+    // FirebaseUI Auth only
+    compile 'com.firebaseui:firebase-ui-auth:1.2.0'
 
     testCompile 'junit:junit:4.12'
 }
