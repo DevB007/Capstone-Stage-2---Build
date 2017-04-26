@@ -33,7 +33,7 @@
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
-        android:layout_width="240dp"
+        android:layout_width="320dip"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_centerHorizontal="true"
