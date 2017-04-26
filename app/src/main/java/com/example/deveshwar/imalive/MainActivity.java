@@ -16,7 +16,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,8 +35,6 @@ public class MainActivity extends AppCompatActivity {
         mAdView.loadAd(adRequest);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        RealmConfiguration config = new RealmConfiguration.Builder(this).build();
-        Realm.setDefaultConfiguration(config);
         realm = Realm.getDefaultInstance();
         reminders = realm.where(Reminder.class).findAll();
         handleEmptyState();
