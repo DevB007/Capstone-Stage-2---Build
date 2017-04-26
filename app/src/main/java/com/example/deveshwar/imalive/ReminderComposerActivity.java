@@ -25,11 +25,8 @@ import org.json.JSONObject;
 
 import java.util.Calendar;
 
-import io.realm.Realm;
-
 public class ReminderComposerActivity extends AppCompatActivity {
 
-    private Realm realm;
     private Intent intentExtras;
     private FloatingActionButton saveReminderFAB;
     private static Button reminderTimePickerButton;
@@ -57,7 +54,6 @@ public class ReminderComposerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminder_composer);
 
-        realm = Realm.getDefaultInstance();
         intentExtras = getIntent();
 
         ImageView contactPhotoIv = (ImageView) findViewById(R.id.contact_photo);
@@ -90,15 +86,14 @@ public class ReminderComposerActivity extends AppCompatActivity {
 
         if (intentExtras.hasExtra("reminderId")) {
             isEditing = true;
-            reminder = realm.where(Reminder.class).equalTo("id", intentExtras.getIntExtra("reminderId", -1)).findFirst();
+            //reminder = realm.where(Reminder.class).equalTo("id", intentExtras.getIntExtra
+            // ("reminderId", -1)).findFirst();
             if (reminder != null) {
                 reminderDeleteButton.setVisibility(View.VISIBLE);
                 reminderDeleteButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        realm.beginTransaction();
-                        reminder.removeFromRealm();
-                        realm.commitTransaction();
+                        // TODO delete reminder from db
                         finish();
                     }
                 });
@@ -154,10 +149,11 @@ public class ReminderComposerActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (isMessageCompositionValid()) {
-                    realm.beginTransaction();
                     if (!isEditing) {
                         reminder = new Reminder();
-                        Number lastIndex = realm.where(Reminder.class).findAll().max("id");
+                        //realm.where(Reminder.class).findAll().max("id");
+                        // TODO read last object to get next insert key
+                        Number lastIndex = 0;
                         if (lastIndex == null) {
                             lastIndex = 0;
                         }
@@ -169,8 +165,7 @@ public class ReminderComposerActivity extends AppCompatActivity {
                     reminder.setText(reminderMessage.getText().toString());
                     reminder.setDeliveryTime(reminderDeliveryTime);
                     reminder.setDeliveryDays(getReminderDeliveryDays());
-                    realm.copyToRealmOrUpdate(reminder);
-                    realm.commitTransaction();
+                    // TODO write db object update code
 
                     String deliveryTime[] = reminder.getDeliveryTime().split(":");
                     int hour = Integer.parseInt(deliveryTime[0]);

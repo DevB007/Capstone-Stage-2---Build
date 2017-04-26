@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'realm-android'
 
 android {
     signingConfigs {
@@ -44,6 +43,7 @@ dependencies {
     compile "com.google.android.gms:play-services-maps:$GPLAY_VERSION"
     compile "com.google.firebase:firebase-ads:$GPLAY_VERSION"
     compile "com.google.android.gms:play-services-places:$GPLAY_VERSION"
+
     testCompile 'junit:junit:4.12'
 }
 

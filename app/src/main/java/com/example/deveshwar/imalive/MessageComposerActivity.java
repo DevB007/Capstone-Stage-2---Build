@@ -20,7 +20,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.google.android.gms.common.ConnectionResult;
-
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -43,13 +42,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import io.realm.Realm;
-
 public class MessageComposerActivity extends AppCompatActivity implements GoogleApiClient
         .OnConnectionFailedListener {
 
     private static final int PLACE_PICKER_REQUEST = 1;
-    private Realm realm;
     private Bundle intentExtras;
     private FloatingActionButton sendMessageFAB;
     private EditText aliveMessage;
@@ -69,10 +65,11 @@ public class MessageComposerActivity extends AppCompatActivity implements Google
                 .enableAutoManage(this, this)
                 .build();
 
-        realm = Realm.getDefaultInstance();
         intentExtras = getIntent().getExtras();
 
-        reminder = realm.where(Reminder.class).equalTo("id", intentExtras.getInt("reminderId", -1)).findFirst();
+        // TODO get reminder by id
+        //reminder = realm.where(Reminder.class).equalTo("id", intentExtras.getInt("reminderId",
+        // -1)).findFirst();
 
         ImageView contactPhotoIv = (ImageView) findViewById(R.id.contact_photo);
         sendMessageFAB = (FloatingActionButton) findViewById(R.id.send_message_fab);

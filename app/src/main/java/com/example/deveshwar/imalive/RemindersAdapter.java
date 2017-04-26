@@ -14,20 +14,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 
-import io.realm.RealmResults;
 
-public class RemindersAdapter extends
-        RecyclerView.Adapter<RemindersAdapter.ViewHolder> {
+public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.ViewHolder> {
 
-    private static RealmResults<Reminder> mReminders;
+    private List<Reminder> mReminders;
 
-    public RemindersAdapter(RealmResults<Reminder> reminders) {
+    public RemindersAdapter(List<Reminder> reminders) {
         mReminders = reminders;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         public Context context;
         public TextView contactName;
         public ImageView contactPhoto;
@@ -43,26 +42,8 @@ public class RemindersAdapter extends
             reminderText = (TextView) itemView.findViewById(R.id.reminder_text);
             reminderDeliveryTime = (TextView) itemView.findViewById(R.id.reminder_delivery_time);
             reminderDeliveryDays = (TextView) itemView.findViewById(R.id.reminder_delivery_days);
-            itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
         }
 
-        @Override
-        public void onClick(View v) {
-            Reminder reminder = mReminders.get(getLayoutPosition());
-            Intent intent = new Intent(context, ReminderComposerActivity.class);
-            intent.putExtra("reminderId", reminder.getId());
-            context.startActivity(intent);
-        }
-
-        @Override
-        public boolean onLongClick(View v) {
-            Reminder reminder = mReminders.get(getLayoutPosition());
-            Intent intent = new Intent(context, MessageComposerActivity.class);
-            intent.putExtra("reminderId", reminder.getId());
-            context.startActivity(intent);
-            return false;
-        }
     }
 
     @Override
@@ -75,8 +56,23 @@ public class RemindersAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(RemindersAdapter.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(final RemindersAdapter.ViewHolder viewHolder, final int position) {
         Reminder reminder = mReminders.get(position);
+
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForPosition(position, viewHolder, ReminderComposerActivity.class);
+            }
+        });
+
+        viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                startActivityForPosition(position, viewHolder, MessageComposerActivity.class);
+                return true;
+            }
+        });
 
         viewHolder.contactName.setText(reminder.getContactName());
         viewHolder.reminderText.setText(reminder.getText());
@@ -111,5 +107,12 @@ public class RemindersAdapter extends
     @Override
     public int getItemCount() {
         return mReminders.size();
+    }
+
+    private void startActivityForPosition(int position, ViewHolder viewHolder, Class clazz) {
+        Reminder reminder = mReminders.get(position);
+        Intent intent = new Intent(viewHolder.context, clazz);
+        intent.putExtra("reminderId", reminder.getId());
+        viewHolder.context.startActivity(intent);
     }
 }

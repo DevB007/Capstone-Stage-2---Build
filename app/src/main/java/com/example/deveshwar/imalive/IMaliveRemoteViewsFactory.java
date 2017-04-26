@@ -16,12 +16,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-import io.realm.Realm;
-
 public class IMaliveRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     private Context mContext;
     private int mAppWidgetId;
-    private Realm realm;
     private List<Reminder> mReminders;
 
     public IMaliveRemoteViewsFactory(Context context, Intent intent) {
@@ -112,25 +109,7 @@ public class IMaliveRemoteViewsFactory implements RemoteViewsService.RemoteViews
 
     private void initReminders() {
         mReminders = new ArrayList<>();
-        realm = Realm.getInstance(mContext);
-        realm.refresh();
-
-        // workaround for accessing Realm objects on a different thread
-        List<Reminder> remindersList = realm.where(Reminder.class).findAll();
-        List<Reminder> reminderListClone = new ArrayList<>();
-        for (Reminder reminder : remindersList) {
-            Reminder tempReminder = new Reminder();
-            tempReminder.setId(reminder.getId());
-            tempReminder.setText(reminder.getText());
-            tempReminder.setContactName(reminder.getContactName());
-            tempReminder.setContactNumber(reminder.getContactNumber());
-            tempReminder.setContactPhoto(reminder.getContactPhoto());
-            tempReminder.setDeliveryTime(reminder.getDeliveryTime());
-            tempReminder.setDeliveryDays(reminder.getDeliveryDays());
-            reminderListClone.add(tempReminder);
-        }
-
-        mReminders = reminderListClone;
+        //TODO read from db
     }
 
 }

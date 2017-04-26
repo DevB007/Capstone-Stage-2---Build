@@ -9,19 +9,16 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-
-import io.realm.Realm;
-import io.realm.RealmResults;
+import java.util.List;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
-    private Realm realm;
     private ArrayList<Integer> reminderDeliveryDays = new ArrayList<>();
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        realm = Realm.getDefaultInstance();
-        RealmResults<Reminder> reminders = realm.where(Reminder.class).findAll();
+        // TODO read reminders from db
+        List<Reminder> reminders = new ArrayList<>();
         Reminder reminder;
         String deliveryTime[];
         JSONObject deliveryDays;

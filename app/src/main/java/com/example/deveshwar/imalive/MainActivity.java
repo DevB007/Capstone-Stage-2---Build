@@ -15,16 +15,15 @@ import android.view.View;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-import io.realm.Realm;
-import io.realm.RealmResults;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private AdView mAdView;
     private static final int PICK_CONTACT_REQUEST_CODE = 0;
-    private Realm realm;
-    private RealmResults<Reminder> reminders;
     private RemindersAdapter adapter;
+    private List<Reminder> reminders;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
         mAdView.loadAd(adRequest);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        realm = Realm.getDefaultInstance();
-        reminders = realm.where(Reminder.class).findAll();
+        // TODO read reminders from db async
+        reminders = new ArrayList<>();
         handleEmptyState();
 
         RecyclerView rvReminders = (RecyclerView) findViewById(R.id.rvReminders);
@@ -90,8 +89,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (realm != null && adapter != null) {
-            reminders = realm.where(Reminder.class).findAll();
+        if (adapter != null) {
+            //reminders = realm.where(Reminder.class).findAll();
+            // TODO re-read reminders from db
             adapter.notifyDataSetChanged();
             handleEmptyState();
         }

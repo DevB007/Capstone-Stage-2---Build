@@ -4,17 +4,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import io.realm.Realm;
-import io.realm.RealmResults;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class BootReceiver extends BroadcastReceiver {
 
-    private Realm realm;
 
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
-            realm = Realm.getDefaultInstance();
-            RealmResults<Reminder> reminders = realm.where(Reminder.class).findAll();
+            // TODO read reminders from db
+            List<Reminder> reminders = new ArrayList<>();
             Reminder reminder;
             String deliveryTime[];
 

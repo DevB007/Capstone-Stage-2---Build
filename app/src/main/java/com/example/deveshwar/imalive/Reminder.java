@@ -1,11 +1,7 @@
 package com.example.deveshwar.imalive;
 
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
+public class Reminder {
 
-public class Reminder extends RealmObject {
-
-    @PrimaryKey
     public int id;
     public String contactName;
     public String contactNumber;
