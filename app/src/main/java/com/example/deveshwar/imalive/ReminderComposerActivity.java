@@ -1,8 +1,5 @@
 package com.example.deveshwar.imalive;
 
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -11,78 +8,81 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TimePicker;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Calendar;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 
-public class ReminderComposerActivity extends AppCompatActivity {
+public class ReminderComposerActivity extends AppCompatActivity implements TimePickerFragment
+        .OnTimeSetListener {
 
     private Intent intentExtras;
-    private FloatingActionButton saveReminderFAB;
-    private static Button reminderTimePickerButton;
-    public static String reminderDeliveryTime;
-    private Button reminderDeleteButton;
-    private EditText reminderMessage;
-    private CheckBox reminderDeliveryDaySundayButton;
-    private CheckBox reminderDeliveryDayMondayButton;
-    private CheckBox reminderDeliveryDayTuesdayButton;
-    private CheckBox reminderDeliveryDayWednesdayButton;
-    private CheckBox reminderDeliveryDayThursdayButton;
-    private CheckBox reminderDeliveryDayFridayButton;
-    private CheckBox reminderDeliveryDaySaturdayButton;
+
+    @BindView(R.id.save_reminder_fab)
+    FloatingActionButton saveReminderFAB;
+
+    @BindView(R.id.reminder_time_picker_button)
+    Button reminderTimePickerButton;
+
+    @BindView(R.id.reminder_delete_button)
+    Button reminderDeleteButton;
+
+    @BindView(R.id.reminder_message)
+    EditText reminderMessage;
+
+    @BindView(R.id.message_delivery_day_sunday_button)
+    CheckBox reminderDeliveryDaySundayButton;
+
+    @BindView(R.id.message_delivery_day_monday_button)
+    CheckBox reminderDeliveryDayMondayButton;
+
+    @BindView(R.id.message_delivery_day_tuesday_button)
+    CheckBox reminderDeliveryDayTuesdayButton;
+
+    @BindView(R.id.message_delivery_day_wednesday_button)
+    CheckBox reminderDeliveryDayWednesdayButton;
+
+    @BindView(R.id.message_delivery_day_thursday_button)
+    CheckBox reminderDeliveryDayThursdayButton;
+
+    @BindView(R.id.message_delivery_day_friday_button)
+    CheckBox reminderDeliveryDayFridayButton;
+
+    @BindView(R.id.message_delivery_day_saturday_button)
+    CheckBox reminderDeliveryDaySaturdayButton;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    @BindView(R.id.contact_photo)
+    ImageView contactPhotoIv;
 
     private String contactName;
     private String contactNumber;
     private String contactPhoto;
 
     private boolean isEditing;
+
     private Reminder reminder;
 
-    @Override
+    private String reminderDeliveryTime;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminder_composer);
+        ButterKnife.bind(this);
 
         intentExtras = getIntent();
-
-        ImageView contactPhotoIv = (ImageView) findViewById(R.id.contact_photo);
-        saveReminderFAB = (FloatingActionButton) findViewById(R.id.save_reminder_fab);
-        reminderMessage = (EditText) findViewById(R.id.reminder_message);
-        reminderTimePickerButton = (Button) findViewById(R.id.reminder_time_picker_button);
-        reminderDeleteButton = (Button) findViewById(R.id.reminder_delete_button);
-        reminderDeliveryDaySundayButton = (CheckBox) findViewById(R.id.message_delivery_day_sunday_button);
-        reminderDeliveryDayMondayButton = (CheckBox) findViewById(R.id.message_delivery_day_monday_button);
-        reminderDeliveryDayTuesdayButton = (CheckBox) findViewById(R.id.message_delivery_day_tuesday_button);
-        reminderDeliveryDayWednesdayButton = (CheckBox) findViewById(R.id.message_delivery_day_wednesday_button);
-        reminderDeliveryDayThursdayButton = (CheckBox) findViewById(R.id.message_delivery_day_thursday_button);
-        reminderDeliveryDayFridayButton = (CheckBox) findViewById(R.id.message_delivery_day_friday_button);
-        reminderDeliveryDaySaturdayButton = (CheckBox) findViewById(R.id.message_delivery_day_saturday_button);
-
-        reminderDeliveryDaySundayButton
-                .setOnCheckedChangeListener(onReminderDeliveryDayCheckChanged);
-        reminderDeliveryDayMondayButton
-                .setOnCheckedChangeListener(onReminderDeliveryDayCheckChanged);
-        reminderDeliveryDayTuesdayButton
-                .setOnCheckedChangeListener(onReminderDeliveryDayCheckChanged);
-        reminderDeliveryDayWednesdayButton
-                .setOnCheckedChangeListener(onReminderDeliveryDayCheckChanged);
-        reminderDeliveryDayThursdayButton
-                .setOnCheckedChangeListener(onReminderDeliveryDayCheckChanged);
-        reminderDeliveryDayFridayButton
-                .setOnCheckedChangeListener(onReminderDeliveryDayCheckChanged);
-        reminderDeliveryDaySaturdayButton
-                .setOnCheckedChangeListener(onReminderDeliveryDayCheckChanged);
 
         if (intentExtras.hasExtra("reminderId")) {
             isEditing = true;
@@ -137,7 +137,6 @@ public class ReminderComposerActivity extends AppCompatActivity {
             contactPhoto = intentExtras.getStringExtra("contactPhoto");
         }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(contactName);
         setSupportActionBar(toolbar);
 
@@ -180,45 +179,38 @@ public class ReminderComposerActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                DialogFragment timerPickerFragment = new TimePickerFragment();
+                TimePickerFragment timerPickerFragment = new TimePickerFragment();
+                timerPickerFragment.bind(ReminderComposerActivity.this);
                 timerPickerFragment.show(getFragmentManager(), "timePicker");
             }
         });
     }
 
-    public CompoundButton.OnCheckedChangeListener onReminderDeliveryDayCheckChanged = new CompoundButton.OnCheckedChangeListener() {
-
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView,
-                                     boolean isChecked) {
-            if (!isChecked) {
-                buttonView.setTextColor(getResources().getColor(R.color.colorPrimaryText));
-                buttonView.setBackgroundResource(R.drawable.reminder_day_background_transparent);
-                buttonView.setTypeface(Typeface.DEFAULT);
-            } else {
-                buttonView.setTextColor(getResources().getColor(android.R.color.white));
-                buttonView.setBackgroundResource(R.drawable.reminder_day_background);
-                buttonView.setTypeface(Typeface.DEFAULT_BOLD);
-            }
-        }
-    };
-
-    public static class TimePickerFragment extends DialogFragment implements
-            TimePickerDialog.OnTimeSetListener {
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            final Calendar c = Calendar.getInstance();
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
-            return new TimePickerDialog(getActivity(), this, hour, minute,
-                    DateFormat.is24HourFormat(getActivity()));
+    @OnCheckedChanged({R.id.message_delivery_day_sunday_button,
+            R.id.message_delivery_day_monday_button,
+            R.id.message_delivery_day_tuesday_button,
+            R.id.message_delivery_day_wednesday_button,
+            R.id.message_delivery_day_thursday_button,
+            R.id.message_delivery_day_friday_button,
+            R.id.message_delivery_day_saturday_button})
+    public void onReminderDeliveryDayCheckChanged(CompoundButton buttonView,
+                                                  boolean isChecked ) {
+        if (!isChecked) {
+            buttonView.setTextColor(getResources().getColor(R.color.colorPrimaryText));
+            buttonView.setBackgroundResource(R.drawable.reminder_day_background_transparent);
+            buttonView.setTypeface(Typeface.DEFAULT);
+        } else {
+            buttonView.setTextColor(getResources().getColor(android.R.color.white));
+            buttonView.setBackgroundResource(R.drawable.reminder_day_background);
+            buttonView.setTypeface(Typeface.DEFAULT_BOLD);
         }
 
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            reminderDeliveryTime = Util.getFormattedTime(hourOfDay, minute);
-            reminderTimePickerButton.setText(Util.getHumanFormattedTime(reminderDeliveryTime));
-        }
+    }
+
+    @Override
+    public void onTimeSet(int hh, int mm) {
+        reminderDeliveryTime = Util.getFormattedTime(hh, mm);
+        reminderTimePickerButton.setText(Util.getHumanFormattedTime(reminderDeliveryTime));
     }
 
     public boolean isMessageCompositionValid() {

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "124449345960-admv3seplf4hr3qis3vtadpmaa05shor.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.deveshwar.imalive",
+            "certificate_hash": "41a7efaa600f62994c7d40d81c92415954ccfcb1"
+          }
+        },
+        {
           "client_id": "124449345960-kr2c375uahco4dlsavi3e94i1olq9pnn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

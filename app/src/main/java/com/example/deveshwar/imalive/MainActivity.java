@@ -1,5 +1,6 @@
 package com.example.deveshwar.imalive;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -12,33 +13,50 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity {
 
-    private AdView mAdView;
     private static final int PICK_CONTACT_REQUEST_CODE = 0;
+
     private RemindersAdapter adapter;
     private List<Reminder> reminders;
+
+    @BindView(R.id.adView)
+    AdView mAdView;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    @BindView(R.id.rvReminders)
+    RecyclerView rvReminders;
+
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mAdView = (AdView) findViewById(R.id.adView);
+        ButterKnife.bind(this);
+
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
+
         // TODO read reminders from db async
         reminders = new ArrayList<>();
         handleEmptyState();
 
-        RecyclerView rvReminders = (RecyclerView) findViewById(R.id.rvReminders);
         adapter = new RemindersAdapter(reminders);
         rvReminders.setAdapter(adapter);
         rvReminders.setLayoutManager(new LinearLayoutManager(this));
@@ -47,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
                 DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST);
         rvReminders.addItemDecoration(itemDecoration);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,6 +120,12 @@ public class MainActivity extends AppCompatActivity {
         } else {
             findViewById(R.id.empty_state).setVisibility(View.GONE);
         }
+    }
+
+    public static Intent createIntent(Context context, IdpResponse idpResponse) {
+        Intent in = IdpResponse.getIntent(idpResponse);
+        in.setClass(context, MainActivity.class);
+        return in;
     }
 }
 

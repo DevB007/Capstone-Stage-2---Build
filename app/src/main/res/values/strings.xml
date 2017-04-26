@@ -40,4 +40,11 @@
     <string name="message_sent_message">Your IMalive message has been sent to</string>
     <string name="message_send_button">Send Message</string>
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="sign_in">Sign In</string>
+    <string name="configuration_required">Configuration is required</string>
+    <string name="unknown_response">Unexpected onActivityResult response code</string>
+    <string name="unknown_sign_in_responnse">Unknown response from AuthUI sign-in</string>
+    <string name="sign_in_cancelled">Sign in cancelled</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="unknown_error">An unknown error occurred</string>
 </resources>

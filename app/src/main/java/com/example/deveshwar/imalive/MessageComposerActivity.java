@@ -42,21 +42,37 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MessageComposerActivity extends AppCompatActivity implements GoogleApiClient
         .OnConnectionFailedListener {
 
     private static final int PLACE_PICKER_REQUEST = 1;
     private Bundle intentExtras;
-    private FloatingActionButton sendMessageFAB;
-    private EditText aliveMessage;
+
     private Reminder reminder;
+
     private GoogleApiClient mGoogleApiClient;
     private ProgressDialog progressDialog;
+
+    @BindView(R.id.send_message_fab)
+    FloatingActionButton sendMessageFAB;
+
+    @BindView(R.id.alive_message)
+    EditText aliveMessage;
+
+    @BindView(R.id.contact_photo)
+    ImageView contactPhotoIv;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_composer);
+        ButterKnife.bind(this);
 
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
@@ -71,15 +87,10 @@ public class MessageComposerActivity extends AppCompatActivity implements Google
         //reminder = realm.where(Reminder.class).equalTo("id", intentExtras.getInt("reminderId",
         // -1)).findFirst();
 
-        ImageView contactPhotoIv = (ImageView) findViewById(R.id.contact_photo);
-        sendMessageFAB = (FloatingActionButton) findViewById(R.id.send_message_fab);
-        aliveMessage = (EditText) findViewById(R.id.alive_message);
-
         String contactPhoto = reminder.getContactPhoto();
 
         aliveMessage.setText(reminder.getText());
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(reminder.getContactName());
         setSupportActionBar(toolbar);
 
