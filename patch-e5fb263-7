@@ -1,0 +1,19 @@
+commit e5fb26368143b09ace4557c7a653309212a677ce
+Author: Deepankar <deepankar@vitamap.com>
+Date:   Wed Apr 26 08:00:33 2017 +0530
+
+    Fix ad width.
+
+diff --git a/app/src/main/res/layout/activity_main.xml b/app/src/main/res/layout/activity_main.xml
+index ccb39eb..93559b7 100644
+--- a/app/src/main/res/layout/activity_main.xml
++++ b/app/src/main/res/layout/activity_main.xml
+@@ -33,7 +33,7 @@
+ 
+     <com.google.android.gms.ads.AdView
+         android:id="@+id/adView"
+-        android:layout_width="240dp"
++        android:layout_width="320dip"
+         android:layout_height="wrap_content"
+         android:layout_gravity="bottom"
+         android:layout_centerHorizontal="true"

@@ -1,0 +1,60 @@
+commit c4efd7fcab76b14473794d549b9105f8f1bf8ccf
+Author: Deepankar <deepankar@vitamap.com>
+Date:   Sat Apr 15 15:16:18 2017 +0530
+
+    Added application name in manifest and initialised realm configuration in application.onCreate
+
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+index e40dbb6..eda0408 100644
+--- a/app/src/main/AndroidManifest.xml
++++ b/app/src/main/AndroidManifest.xml
+@@ -14,6 +14,7 @@
+         android:icon="@mipmap/ic_launcher"
+         android:label="@string/app_name"
+         android:supportsRtl="true"
++        android:name=".IMaliveApplication"
+         android:theme="@style/AppTheme">
+         <activity
+             android:name=".MainActivity"
+diff --git a/app/src/main/java/com/example/deveshwar/imalive/MainActivity.java b/app/src/main/java/com/example/deveshwar/imalive/MainActivity.java
+index 36fd009..a6a8881 100644
+--- a/app/src/main/java/com/example/deveshwar/imalive/MainActivity.java
++++ b/app/src/main/java/com/example/deveshwar/imalive/MainActivity.java
+@@ -16,7 +16,6 @@ import com.google.android.gms.ads.AdRequest;
+ import com.google.android.gms.ads.AdView;
+ 
+ import io.realm.Realm;
+-import io.realm.RealmConfiguration;
+ import io.realm.RealmResults;
+ 
+ public class MainActivity extends AppCompatActivity {
+@@ -36,8 +35,6 @@ public class MainActivity extends AppCompatActivity {
+         mAdView.loadAd(adRequest);
+         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+         setSupportActionBar(toolbar);
+-        RealmConfiguration config = new RealmConfiguration.Builder(this).build();
+-        Realm.setDefaultConfiguration(config);
+         realm = Realm.getDefaultInstance();
+         reminders = realm.where(Reminder.class).findAll();
+         handleEmptyState();
+diff --git a/app/src/main/res/layout/activity_main.xml b/app/src/main/res/layout/activity_main.xml
+index 665a50b..ccb39eb 100644
+--- a/app/src/main/res/layout/activity_main.xml
++++ b/app/src/main/res/layout/activity_main.xml
+@@ -22,8 +22,6 @@
+ 
+     </android.support.design.widget.AppBarLayout>
+ 
+-    <include layout="@layout/content_main" />
+-
+     <android.support.design.widget.FloatingActionButton
+         android:id="@+id/fab"
+         android:layout_width="wrap_content"
+@@ -43,6 +41,7 @@
+         ads:adSize="BANNER"
+         ads:adUnitId="@string/banner_ad_unit_id">
+     </com.google.android.gms.ads.AdView>
++    <include layout="@layout/content_main"/>
+ 
+ </android.support.design.widget.CoordinatorLayout>
+ 
