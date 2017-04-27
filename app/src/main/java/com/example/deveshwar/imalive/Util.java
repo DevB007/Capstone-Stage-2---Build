@@ -38,6 +38,8 @@ public class Util {
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
 
         Intent intent = new Intent(context, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,
@@ -67,7 +69,9 @@ public class Util {
                 .setAutoCancel(true)
                 .addAction(R.drawable.ic_textsms_black_24dp,
                         context.getString(R.string.reminder_notification_action_still_alive),
-                        pendingIntent).build();
+                        pendingIntent)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .build();
 
         NotificationManager notificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);

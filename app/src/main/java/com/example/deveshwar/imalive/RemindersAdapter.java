@@ -2,6 +2,7 @@ package com.example.deveshwar.imalive;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,20 +21,31 @@ import java.util.Locale;
 
 public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.ViewHolder> {
 
-    private List<Reminder> mReminders;
+    private final List<Reminder> mReminders;
 
     public RemindersAdapter(List<Reminder> reminders) {
         mReminders = reminders;
     }
 
+    public void reload(Cursor data) {
+        mReminders.clear();
+        data.moveToFirst();
+        while (!data.isAfterLast()) {
+            Reminder reminder = Reminder.from(data);
+            mReminders.add(reminder);
+            data.moveToNext();
+        }
+        notifyDataSetChanged();
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
+
         public Context context;
         public TextView contactName;
         public ImageView contactPhoto;
         public TextView reminderText;
         public TextView reminderDeliveryTime;
         public TextView reminderDeliveryDays;
-
         public ViewHolder(Context context, View itemView) {
             super(itemView);
             this.context = context;
@@ -114,5 +126,9 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.View
         Intent intent = new Intent(viewHolder.context, clazz);
         intent.putExtra("reminderId", reminder.getId());
         viewHolder.context.startActivity(intent);
+    }
+
+    public List<Reminder> getReminders() {
+        return mReminders;
     }
 }

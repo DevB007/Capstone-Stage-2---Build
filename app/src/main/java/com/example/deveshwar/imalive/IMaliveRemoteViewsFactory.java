@@ -3,6 +3,7 @@ package com.example.deveshwar.imalive;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.RemoteViews;
@@ -109,7 +110,15 @@ public class IMaliveRemoteViewsFactory implements RemoteViewsService.RemoteViews
 
     private void initReminders() {
         mReminders = new ArrayList<>();
-        //TODO read from db
+        final Cursor data = mContext.getContentResolver().query(
+                RemindersContract.buildGetAllRemindersUri(), null, null, null, null);
+        data.moveToFirst();
+        while (!data.isAfterLast()) {
+            Reminder reminder = Reminder.from(data);
+            mReminders.add(reminder);
+            data.moveToNext();
+        }
+
     }
 
 }

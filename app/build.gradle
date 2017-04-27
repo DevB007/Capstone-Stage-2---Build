@@ -44,9 +44,6 @@ dependencies {
     compile "com.google.firebase:firebase-ads:$GPLAY_VERSION"
     compile "com.google.android.gms:play-services-places:$GPLAY_VERSION"
 
-    // FirebaseUI Database only
-    compile 'com.firebaseui:firebase-ui-database:1.2.0'
-
     // FirebaseUI Auth only
     compile 'com.firebaseui:firebase-ui-auth:1.2.0'
 

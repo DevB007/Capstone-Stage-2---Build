@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
-
     <application
         android:name=".IMaliveApplication"
         android:allowBackup="true"
@@ -56,6 +55,11 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/appwidget_info"/>
         </receiver>
+
+        <provider
+            android:name=".RemindersProvider"
+            android:authorities="com.deveshwar.imalive" />
+
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

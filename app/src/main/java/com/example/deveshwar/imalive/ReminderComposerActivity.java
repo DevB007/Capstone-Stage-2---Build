@@ -1,6 +1,7 @@
 package com.example.deveshwar.imalive;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -86,14 +87,20 @@ public class ReminderComposerActivity extends AppCompatActivity implements TimeP
 
         if (intentExtras.hasExtra("reminderId")) {
             isEditing = true;
-            //reminder = realm.where(Reminder.class).equalTo("id", intentExtras.getIntExtra
-            // ("reminderId", -1)).findFirst();
+            final Cursor cur = getContentResolver().query(
+                    RemindersContract.buildReminderUri(
+                            intentExtras.getIntExtra("reminderId", -1)), null, null, null, null);
+            cur.moveToFirst();
+            reminder = Reminder.from(cur);
+            cur.close();
             if (reminder != null) {
                 reminderDeleteButton.setVisibility(View.VISIBLE);
                 reminderDeleteButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // TODO delete reminder from db
+                        getContentResolver().delete(
+                                RemindersContract.buildReminderUri(
+                                        intentExtras.getIntExtra("reminderId", -1)), null, null);
                         finish();
                     }
                 });
@@ -147,31 +154,34 @@ public class ReminderComposerActivity extends AppCompatActivity implements TimeP
         saveReminderFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isMessageCompositionValid()) {
-                    if (!isEditing) {
-                        reminder = new Reminder();
-                        //realm.where(Reminder.class).findAll().max("id");
-                        // TODO read last object to get next insert key
-                        Number lastIndex = 0;
-                        if (lastIndex == null) {
-                            lastIndex = 0;
-                        }
-                        reminder.setId(lastIndex.intValue() + 1);
-                        reminder.setContactName(contactName);
-                        reminder.setContactNumber(contactNumber);
-                        reminder.setContactPhoto(contactPhoto);
-                    }
-                    reminder.setText(reminderMessage.getText().toString());
-                    reminder.setDeliveryTime(reminderDeliveryTime);
-                    reminder.setDeliveryDays(getReminderDeliveryDays());
-                    // TODO write db object update code
-
-                    String deliveryTime[] = reminder.getDeliveryTime().split(":");
-                    int hour = Integer.parseInt(deliveryTime[0]);
-                    int minute = Integer.parseInt(deliveryTime[1]);
-                    Util.setAlarm(ReminderComposerActivity.this, hour, minute);
-                    finish();
+                if (!isMessageCompositionValid()) {
+                    return;
                 }
+
+                if (!isEditing) {
+                    reminder = new Reminder();
+                    reminder.setContactName(contactName);
+                    reminder.setContactNumber(contactNumber);
+                    reminder.setContactPhoto(contactPhoto);
+                }
+
+                reminder.setText(reminderMessage.getText().toString());
+                reminder.setDeliveryTime(reminderDeliveryTime);
+                reminder.setDeliveryDays(getReminderDeliveryDays());
+
+                if (!isEditing) {
+                    // insert
+                    getContentResolver().insert(RemindersContract.ReminderEntry.CONTENT_URI, reminder.toContentValues());
+                } else {
+                    getContentResolver().update(RemindersContract.buildReminderUri(reminder.getId()), reminder.toContentValues(), null, null);
+                    // update
+                }
+
+                String deliveryTime[] = reminder.getDeliveryTime().split(":");
+                int hour = Integer.parseInt(deliveryTime[0]);
+                int minute = Integer.parseInt(deliveryTime[1]);
+                Util.setAlarm(ReminderComposerActivity.this, hour, minute);
+                finish();
             }
         });
 

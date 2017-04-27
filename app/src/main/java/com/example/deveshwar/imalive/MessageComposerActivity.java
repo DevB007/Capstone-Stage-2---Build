@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -83,9 +84,11 @@ public class MessageComposerActivity extends AppCompatActivity implements Google
 
         intentExtras = getIntent().getExtras();
 
-        // TODO get reminder by id
-        //reminder = realm.where(Reminder.class).equalTo("id", intentExtras.getInt("reminderId",
-        // -1)).findFirst();
+        final Cursor cur = getContentResolver().query(
+                RemindersContract.buildReminderUri(
+                        intentExtras.getInt("reminderId", -1)), null, null, null, null);
+        cur.moveToFirst();
+        reminder = Reminder.from(cur);
 
         String contactPhoto = reminder.getContactPhoto();
 

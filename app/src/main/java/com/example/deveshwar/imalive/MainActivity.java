@@ -1,7 +1,10 @@
 package com.example.deveshwar.imalive;
 
+import android.app.LoaderManager;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,9 +26,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int PICK_CONTACT_REQUEST_CODE = 0;
+    public static final int REMINDER_LOADER_ID = R.id.loader_reminder;
 
     private RemindersAdapter adapter;
     private List<Reminder> reminders;
@@ -53,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        // TODO read reminders from db async
         reminders = new ArrayList<>();
         handleEmptyState();
 
@@ -106,12 +110,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (adapter != null) {
-            //reminders = realm.where(Reminder.class).findAll();
-            // TODO re-read reminders from db
-            adapter.notifyDataSetChanged();
-            handleEmptyState();
-        }
+        getLoaderManager().initLoader(REMINDER_LOADER_ID, null, this);
     }
 
     private void handleEmptyState() {
@@ -126,6 +125,33 @@ public class MainActivity extends AppCompatActivity {
         Intent in = IdpResponse.getIntent(idpResponse);
         in.setClass(context, MainActivity.class);
         return in;
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        if (id == REMINDER_LOADER_ID) {
+            return new CursorLoader(this, RemindersContract.buildGetAllRemindersUri(),
+                    null, null, null, null);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (loader.getId() == REMINDER_LOADER_ID) {
+            adapter.reload(data);
+            handleEmptyState();
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        if (loader.getId() == REMINDER_LOADER_ID) {
+            rvReminders.setAdapter(null);
+            adapter = null;
+            handleEmptyState();
+        }
     }
 }
 

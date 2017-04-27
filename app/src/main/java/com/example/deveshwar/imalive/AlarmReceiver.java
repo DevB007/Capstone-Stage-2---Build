@@ -3,13 +3,13 @@ package com.example.deveshwar.imalive;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
@@ -17,9 +17,12 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        // TODO read reminders from db
-        List<Reminder> reminders = new ArrayList<>();
-        Reminder reminder;
+
+        final Cursor data = context.getContentResolver().query(
+                RemindersContract.buildGetAllRemindersUri(), null, null, null, null);
+
+        if (data == null) return;
+
         String deliveryTime[];
         JSONObject deliveryDays;
 
@@ -28,9 +31,12 @@ public class AlarmReceiver extends BroadcastReceiver {
         int minute = calendar.get(Calendar.MINUTE);
         int day = calendar.get(Calendar.DAY_OF_WEEK);
 
-        for (int i = 0; i < reminders.size(); i++) {
-            reminder = reminders.get(i);
+        data.moveToFirst();
+        while (!data.isAfterLast()) {
+
+            Reminder reminder = Reminder.from(data);
             deliveryTime = reminder.getDeliveryTime().split(":");
+
             try {
                 deliveryDays = new JSONObject(reminder.getDeliveryDays());
                 reminderDeliveryDays.clear();
@@ -67,6 +73,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 e.printStackTrace();
             }
 
+            data.moveToNext();
         }
 
     }
